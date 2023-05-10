@@ -1,0 +1,20 @@
+from "lib:cif" import *;
+
+    cifdatasynth("models/14_LockIII.cif",
+        "--stats=bdd-perf-cont",
+        "--statsfile-contperf=evoplot_14LockIII_BDDmetrics.stats.txt",
+        "--event-warn=no",
+        "--plant-ref-req-warn=no",
+        "--bdd-output=nodes",
+        "--var-order=random:00",
+        "--backward-edge-order=random:00",
+        "--dcsh-order=no",
+        "--force-order=yes",
+        "--sliding-window-order=yes",
+        "--sliding-window-size=4",
+        "--hyper-edge-algo=linearized",
+        "--state-req-invs=all-ctrl-beh",
+        "--gui=off", // apply for cluster experiments
+    );
+
+

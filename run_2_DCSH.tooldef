@@ -1,0 +1,33 @@
+from "lib:cif" import *;
+import java.lang.System.gc;
+
+list string modelnames = ["01_avg","02_ball_system2","05_Cluster_tool","07_Multi_agent_formation","08_Production_cell","13_adas2","14_LockIII","15_FESTO","17_swarm_segregation","18_swarm_aggregation","19_swarm_clustering","20_swarm_formation","21_bridge","24_themepark","26_power_substation","REQ01_lithography_init","REQ02_CMT_v1_n3_k2","REQ03_CMT_v2_n3_k1"];
+list string seeds1 = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99"];
+list string seeds2 = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99"];
+
+for seed1 in seeds1:
+    for seed2 in seeds2:
+        for name in modelnames:
+            if filesize("2_DCSH/results/output_"+name+"_var"+seed1+seed2+"_ev_model.txt",true)==0:
+                gc();
+                cifdatasynth("models/"+name+".cif",
+                "--output=output/"+name+".ctrlsys.cif", //we don't really care about these. overwrite them with each other
+                "--stats=bdd-perf-cache,bdd-perf-max-nodes",
+                "--event-warn=no",
+                "--plant-ref-req-warn=no",
+                "--bdd-output=nodes",
+                "--var-order=random:"+seed1+seed2,
+                "--backward-edge-order=model",
+                "--dcsh-order=yes",
+                "--force-order=no",
+                "--sliding-window-order=no",
+                "--hyper-edge-algo=linearized",
+                "--state-req-invs=all-ctrl-beh",
+                "--gui=off", // apply for cluster experiments
+                stdout="2_DCSH/results/output_"+name+"_var"+seed1+seed2+"_ev_model.txt",
+                );
+            end
+        end
+    end
+end
+

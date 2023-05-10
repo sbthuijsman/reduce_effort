@@ -1,0 +1,46 @@
+from "lib:cif" import *;
+
+//list string modelnames = ["01_avg","02_ball_system2","05_Cluster_tool","07_Multi_agent_formation","08_Production_cell","13_adas2","14_LockIII","15_FESTO","17_swarm_segregation","18_swarm_aggregation","19_swarm_clustering","20_swarm_formation","21_bridge","24_themepark","REQ01_lithography_init","REQ02_CMT_v1_n3_k2","REQ03_CMT_v2_n3_k1"];
+//run only for models that have state invariants
+list string modelnames = ["REQ01_lithography_init","REQ02_CMT_v1_n3_k2","REQ03_CMT_v2_n3_k1"];
+
+
+for name in modelnames:
+    cifdatasynth("models/"+name+".cif",
+        "--output=output/"+name+".ctrlsys.cif", //we don't really care about these. overwrite them with each other
+        "--stats=bdd-perf-cont",
+        "--statsfile-contperf=evoplot_"+name+"_all-ctrl-beh.stats.txt",
+        "--event-warn=no",
+        "--plant-ref-req-warn=no",
+        "--bdd-output=nodes",
+        "--backward-edge-order=reverse-model",
+        "--dcsh-order=yes",
+        "--force-order=yes",
+        "--sliding-window-order=yes",
+        "--sliding-window-size=4",
+        "--hyper-edge-algo=linearized",
+        "--state-req-invs=all-ctrl-beh",
+        "--gui=off", // apply for cluster experiments
+    );
+end
+
+for name in modelnames:
+    cifdatasynth("models/"+name+".cif",
+        "--output=output/"+name+".ctrlsys.cif", //we don't really care about these. overwrite them with each other
+        "--stats=bdd-perf-cont",
+        "--statsfile-contperf=evoplot_"+name+"_all-per-edge.stats.txt",
+        "--event-warn=no",
+        "--plant-ref-req-warn=no",
+        "--bdd-output=nodes",
+        "--backward-edge-order=reverse-model",
+        "--dcsh-order=yes",
+        "--force-order=yes",
+        "--sliding-window-order=yes",
+        "--sliding-window-size=4",
+        "--hyper-edge-algo=linearized",
+        "--state-req-invs=per-edge",
+        "--gui=off", // apply for cluster experiments
+    );
+end
+
+
